@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class characterMovement : MonoBehaviour
+public class characterMovement : UnityEngine.MonoBehaviour
 {
 	public float moveSpeed = 2f;
 
