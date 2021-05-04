@@ -7,8 +7,11 @@ public class potScript : UnityEngine.MonoBehaviour
 
     public GameObject pot;
     public GameObject potTop;
+    public GameObject soup;
     //UI BAR
     public PotSlider potSlider;
+    //animator
+    //public Animator animator;
     //POT ROTATION
     public float smooth = 0.5f;
     public float tiltAngle = 60.0f;
@@ -19,43 +22,62 @@ public class potScript : UnityEngine.MonoBehaviour
     private int potMaxVolume = 10000;
     //TIPPING
     public float tilt;
-    //Grab the collider
+    public float soupScale;
+    //Grab the relevant collider
     public BoxCollider2D bc2d;
+    public BoxCollider2D bcKing;
 
     // Start is called before the first frame update
     void Start()
     {
-        //forwardTilt = tiltAngleX + 0.84f;
+        //initialize pot volume, and the slider for the UI
         potVolume = potMaxVolume;
+        potSlider.SetMaxVolume(potVolume);
+      
     }
 
     // Update is called once per frame
     void Update()
     {
+        //We want soupScale to be 1 or lower with decimals, so we can use it
+        //for transform.scale where the biggest value is 1
+        //Its in the update function because we want it to constantly update its value
+        soupScale = potVolume;
 
-
-        //---------------------pot rotation------------------------//
-
+        //Call the pot rotation function, which uses quaternions to smooth the rotation
         PotRotation();
 
-        //---------------------------------------------------------//
+        //If the pot tilts in either direction, decrease how much soup is in the pot accordingly
+        DecreasePotVolume();
 
-        if (tilt < 0 || tilt > 0)
+        //if the pot isn't empty, it will look like the soup is decreasing in it
+        if (soupScale >= 0)
         {
-            potTip();
+            soup.transform.localScale = new Vector3((float)soupScale / 10000, (float)soupScale / 10000, 1);
+            //soup.transform.position = new Vector3(0, (float)soupScale / 10001, 0);
         }
+        
    
     }
 
-    void potTip()
+    void DecreasePotVolume()
     {
+        //breaks out of the function if the game has been won.
+        if (bc2d.IsTouching(bcKing))
+        {
+            return;
+        }
+
         if (tilt >= 0.15)
         {
             //tipping left animation here
+            //animator.SetBool("isTippingLeft", true);
+
         }
         if (tilt <= -0.15)
         {
             //tipping right animation here
+            // one that starts the tip, and a second animation that loops ( constant flow)
         }
         if (tilt >= 0.15 || tilt <= -0.15)
         {
@@ -87,22 +109,18 @@ public class potScript : UnityEngine.MonoBehaviour
         // Rotate the pot by converting the angles into a quaternion.
         Quaternion target = Quaternion.Euler(tiltAroundX, 0, tiltAroundZ);
         
-        //scale
+        //scale forward tipping.. (not complete)
         //Quaternion target2 = Quaternion.Euler(1.129f, tiltAroundX, 1f);
         //tiltAroundX = tiltAroundX % 0.72f + 1;
         if (tiltAroundX > 0.55f && tiltAroundX < 0.80f)
         potTop.transform.localScale = new Vector3(1.129f, tiltAroundX, 1);
-        //figure out forwards tipping
-        // need the tipping to default to 0.55 instead of 0 (x scale)
-        // min 0.12 and max 0.75
-        //if (tiltAroundX > 0.12f && tiltAroundX < 0.55f)
-        //    potTop.transform.localScale = new Vector3(1.129f, tiltAroundX, 1);
 
         // Dampen towards the target rotation
         pot.transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
 
-        //make a rotation specifically for the x axis (the one that needs to modify the scale)
-        //scale resets to 0.5, cannot go smaller than 0.25, and cannot go wider than 0.75
+        ///TO DO: (if I want it to tip forwards and backwards too)
+        ///make a rotation specifically for the x axis (the one that needs to modify the scale)
+        ///scale resets to 0.5, cannot go smaller than 0.25, and cannot go wider than 0.75
 
         //sets the tilt variable  -0.5 fully left 0.5 fully right
         tilt = pot.transform.rotation.z;
@@ -111,6 +129,6 @@ public class potScript : UnityEngine.MonoBehaviour
    
 
     //references:
-    //pot rotation
+    //quaternion pot rotation
     //https://docs.unity3d.com/ScriptReference/Transform-rotation.html
 }
