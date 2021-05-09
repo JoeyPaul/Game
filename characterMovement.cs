@@ -29,7 +29,7 @@ public class characterMovement : UnityEngine.MonoBehaviour
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-
+    //
     //references:
     //Brackeys: TOP DOWN MOVEMENT in Unity!, YouTube Tutorial
     //https://www.youtube.com/watch?v=whzomFgjT50 
