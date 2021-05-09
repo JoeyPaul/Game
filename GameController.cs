@@ -8,6 +8,16 @@ public class GameController : MonoBehaviour
     public BoxCollider2D bcMC;
     public BoxCollider2D bcKing;
 
+    public BoxCollider2D enemy1;
+    public BoxCollider2D enemy2;
+    public BoxCollider2D enemy3;
+    public BoxCollider2D enemy4;
+    public BoxCollider2D enemy5;
+    public BoxCollider2D enemy6;
+    public BoxCollider2D enemy7;
+    public BoxCollider2D enemy8;
+    public BoxCollider2D enemy9;
+
     public GameObject gameOverOverlay;
     public GameObject gameWinUI;
     public GameObject goldMedal;
@@ -23,6 +33,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         gameWon = false;
+        ResumeGame();
     }
 
     // Update is called once per frame
@@ -54,6 +65,7 @@ public class GameController : MonoBehaviour
             }
             else
                 gameWon = false;
+                PauseGame();
         }
         
         if (bcMC.IsTouching(bcKing) && gameWon  == false)
@@ -67,6 +79,25 @@ public class GameController : MonoBehaviour
             //gameover
             //UI gameover canvas is turned on
             gameOverOverlay.SetActive(true);
+            PauseGame();
         }
+
+        if (bcMC.IsTouching(enemy1) || bcMC.IsTouching(enemy2) || bcMC.IsTouching(enemy3) ||
+            bcMC.IsTouching(enemy4) || bcMC.IsTouching(enemy5) || bcMC.IsTouching(enemy6) ||
+            bcMC.IsTouching(enemy7) || bcMC.IsTouching(enemy8) || bcMC.IsTouching(enemy9))
+        {
+            gameOverOverlay.SetActive(true);
+            PauseGame();
+        }
+            
+    }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }
