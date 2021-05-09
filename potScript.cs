@@ -13,7 +13,7 @@ public class potScript : UnityEngine.MonoBehaviour
     //animator
     //public Animator animator;
     //POT ROTATION
-    public float smooth = 0.5f;
+    public float smooth = 2f;
     public float tiltAngle = 60.0f;
     public float tiltAngleX = 0f;
     private float forwardTilt;
@@ -121,6 +121,7 @@ public class potScript : UnityEngine.MonoBehaviour
         ///TO DO: (if I want it to tip forwards and backwards too)
         ///make a rotation specifically for the x axis (the one that needs to modify the scale)
         ///scale resets to 0.5, cannot go smaller than 0.25, and cannot go wider than 0.75
+        ///for visuals 
 
         //sets the tilt variable  -0.5 fully left 0.5 fully right
         tilt = pot.transform.rotation.z;

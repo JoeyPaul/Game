@@ -11,6 +11,11 @@ public class MainMenuScript : UnityEngine.MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
+    public void QuitToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     public void QuitTheGame()
     {
         Debug.Log("quit the game");
